@@ -1,26 +1,86 @@
 import './App.css';
+import React, { useState } from 'react';
+import About from './components/About';
+import Navbar from './components/Navbar';
+import TextForm from './components/TextForm';
+import Alert from './components/Alert';
+
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
+
+
+
 
 function App() {
+  const [mode, setMode] = useState('light');
+  const [alert, setAlert] = useState(null);
+  const [bg, setBg] = useState('light');
+
+
+  const toggleMode = () => {
+    if (mode === 'light') {
+      setMode('dark');
+      document.body.style.backgroundColor = '#042743';
+      document.body.style.color = 'white';
+      showAlert("Dark mode has been enabled", "success");
+      document.title = "TextUtils - Dark Mode";
+    }
+    else {
+      setMode('light');
+      document.body.style.backgroundColor = 'white';
+      document.body.style.color = 'black';
+      showAlert("Light mode has been enabled", "success");
+      document.title = "TextUtils - Light Mode";
+    }
+  }
+
+
+  const showAlert = (message, type) => {
+    setAlert({
+      msg: message,
+      type: type
+    })
+    setTimeout(() => {
+      setAlert(null)
+    }, 1500)
+  }
+
+  const toggleBg = (color) => {
+    setBg(color);
+    document.body.style.backgroundColor = color;
+    if (color === '#f7c1cc') {
+      document.body.style.color = 'black';
+    }
+    else if (color === '#2B2E34') {
+      document.body.style.color = 'white';
+    }
+    else {
+      document.body.style.color = 'white';
+    }
+  }
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className="container-fluid">
-          <a className="navbar-brand" href="/">TextUtils</a>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav">
-              <li className="nav-item">
-                <a className="nav-link active" href="/">Home</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/">About</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+
+      <Router>
+        <Navbar title="TextUtils" about="About2" mode={mode} toggleMode={toggleMode} toggleBg={toggleBg} />
+        <Alert alert={alert} />
+        <Routes>
+        <Route path="/about" element={<About />} />
+        <Route
+          path="/"
+          element={
+            <TextForm
+              heading="Enter the text to analyze below"
+              showAlert={showAlert}
+            />
+          }
+        />
+        </Routes>
+      </Router>
+
     </>
   );
 }
