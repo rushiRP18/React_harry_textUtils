@@ -15,9 +15,9 @@ export default function TextForm(props) {
         props.showAlert("Converted to Lowercase!","success");
     }
     const handleCopy = () =>{
-        let text = document.getElementById("myBox");
-        text.select();
-        navigator.clipboard.writeText(text.value);
+    
+        navigator.clipboard.writeText(text);
+        document.getSelection().removeAllRanges();
         props.showAlert("Copied to Clipboard!","success");
     }
     const handleClearClick = () => {
@@ -39,18 +39,18 @@ export default function TextForm(props) {
                 <div className="mb-3">
                     <textarea className="form-control" id="myBox" rows="6" value={text} onChange={handleOnChange}></textarea>
                 </div>
-                <div className="btn btn-primary mx-2 my-2" onClick={handleUpClick}>Convert to UpperCase</div>
-                <div className="btn btn-primary mx-2 my-2" onClick={handlelowClick}>Convert to LowerCase</div>
-                <div className="btn btn-primary mx-2 my-2" onClick={handleCopy}>Copy</div>
-                <div className="btn btn-primary mx-2 my-2" onClick={handleClearClick}>Clear</div>
+                <button disabled={text.length===0} className="btn btn-primary mx-2 my-2"  onClick={handleUpClick}>Convert to UpperCase</button>
+                <button disabled={text.length===0} className="btn btn-primary mx-2 my-2" onClick={handlelowClick}>Convert to LowerCase</button>
+                <button disabled={text.length===0} className="btn btn-primary mx-2 my-2" onClick={handleCopy}>Copy</button>
+                <button disabled={text.length===0} className="btn btn-primary mx-2 my-2" onClick={handleClearClick}>Clear</button>
             </div>
             <div className="container my-4">
                 <h2>Your Text Summary</h2>
-                <p>{text.split(" ").length === 1 ? text.split(" ").length -1 : text.split(" ").length } words ans {text.length} chars</p>
-                <p>{text.split(" ").length * 0.008}Minutes required to read </p>
+                <p>{text.split(/\s+/ ).filter((element)=>{return element.length !== 0}).length } words ans {text.length} chars</p>
+                <p>{text.split(" ").filter((element)=>{return element.length !== 0}).length * 0.008} Minutes required to read </p>
 
                 <h2>Preview</h2>
-                <p>{text.length > 1 ? text : "Write Something to preview here...."}</p>
+                <p>{text.length > 1 ? text : "Nothing to preview!!"}</p>
             </div>
         </>
     )

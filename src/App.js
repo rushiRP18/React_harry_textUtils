@@ -65,15 +65,15 @@ function App() {
     <>
 
       <Router>
-        <Navbar title="TextUtils" about="About2" mode={mode} toggleMode={toggleMode} toggleBg={toggleBg} />
+        <Navbar title="TextUtils" about="About" mode={mode} toggleMode={toggleMode} toggleBg={toggleBg} />
         <Alert alert={alert} />
         <Routes>
-        <Route path="/about" element={<About />} />
+        <Route path="/about" element={<About mode={mode} />} />
         <Route
           path="/"
           element={
             <TextForm
-              heading="Enter the text to analyze below"
+              heading="TextUtils - Enter the text below"
               showAlert={showAlert}
             />
           }
